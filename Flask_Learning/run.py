@@ -1,5 +1,7 @@
 
-from flask_learning import app
+from flask_learning import create_app
+
+app = create_app()
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -11,7 +11,7 @@ def home_fun():
     
     page = request.args.get('page',1,type=int)
     
-    posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page,per_page=2)
+    posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page,per_page=4)
     for page_num in posts.iter_pages():
         print(page_num)
     #print(posts[0].id)

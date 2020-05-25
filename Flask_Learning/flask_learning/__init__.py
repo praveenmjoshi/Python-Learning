@@ -11,17 +11,37 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'c4f0fb87dc671f00262836821a8af65d' #generated from command line secrets.token_hex(16)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-db = SQLAlchemy(app)
-bcrypt = Bcrypt(app)
+from flask_learning.config import Config
 
 
-from flask_learning.user.routes import users
-from flask_learning.posts.routes import posts
-from flask_learning.main.routes import main
+db = SQLAlchemy()
+bcrypt = Bcrypt()
 
-app.register_blueprint(users)
-app.register_blueprint(posts)
-app.register_blueprint(main)
+
+
+
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    app.config.from_object(Config)
+    
+    ''' 
+    Below are the extension for applications so instead of directly defining as db = SQLAlchemy(app)
+    We declare them independent to app and call init_app method on them.
+    
+    '''
+    db.init_app(app) 
+    bcrypt.init_app(app)
+    
+    from flask_learning.user.routes import users
+    from flask_learning.posts.routes import posts
+    from flask_learning.main.routes import main
+    
+    app.register_blueprint(users)
+    app.register_blueprint(posts)
+    app.register_blueprint(main)
+    
+    ''' 
+    import app as 'from flask import current_app' if needed
+    except in __init__ file where in we import this function and call it.
+    '''
+    return app
