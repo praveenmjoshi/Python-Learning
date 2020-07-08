@@ -35,13 +35,15 @@ def create_app(config_class=Config):
     from flask_learning.user.routes import users
     from flask_learning.posts.routes import posts
     from flask_learning.main.routes import main
+    from flask_learning.errors.handlers import errors
     
     app.register_blueprint(users)
     app.register_blueprint(posts)
     app.register_blueprint(main)
+    app.register_blueprint(errors)
     
     ''' 
     import app as 'from flask import current_app' if needed
-    except in __init__ file where in we import this function and call it.
+    except in run.py file where in we import this function and call it.
     '''
     return app
